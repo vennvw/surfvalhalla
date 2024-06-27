@@ -38,12 +38,17 @@
             @foreach ($surfMaps as $map)
                 <div class="col-md-4">
                     <div class="map-box">
-                        <img src="{{ $map->Image }}" alt="Map Image">
+                        <img src="{{ route('map.image', ['id' => $map->id]) }}" alt="Map image">
                         <h4>{{ $map->Name }}</h4>
                         <p>Tier: {{ $map->Tier }}</p>
                         <p>Status: {{ $map->Status }}</p>
                         <button class="btn btn-primary" onclick="window.location='{{ url("comment/".$map->id) }}'">Comment</button>
                         <button class="btn btn-warning" onclick="window.location='{{ url("rate/".$map->id) }}'">Rate</button>
+                        <form method="POST" action="{{ route('delete.map', ['id' => $map->id]) }}" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
                     </div>
                 </div>
             @endforeach
