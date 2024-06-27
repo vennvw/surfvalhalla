@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Database\Seeder;
 use App\Models\Surf_Users;
@@ -18,15 +19,20 @@ class DatabaseSeeder extends Seeder
     {
 
         // Create 10 users
-        $users = Surf_Users::factory(10)->create();
+        // $users = Surf_Users::factory(10)->create();
 
         // Create 5 maps
-        $maps = Surf_Maps::factory(5)->create();
+        // $maps = Surf_Maps::factory(5)->create();
 
-        // Create 10 ratings
-        $ratings = Ratings::factory(10)->create();
+        // // Create 10 ratings
+        // $ratings = Ratings::factory(10)->create();
 
-        // Create 10 comments
-        $comments = Comments::factory(10)->create();
+        // // Create 10 comments
+        // $comments = Comments::factory(10)->create();
+        Surf_Users::create([
+            'Username' => 'rirds_admin',
+            'Password' => Hash::make('password123'), // Hash the password
+            'Role' => 'admin'
+        ]);
     }
 }

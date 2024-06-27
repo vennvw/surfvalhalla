@@ -1,4 +1,3 @@
-<!-- resources/views/index.blade.php -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,8 +29,26 @@
 <body>
     <div class="container">
         <div class="header">
-            <button class="btn btn-primary" onclick="window.location='{{ url("add-map") }}'">Add Map</button>
-            <button class="btn btn-secondary" onclick="window.location='{{ url("add-moderator") }}'">Add Moderator</button>
+            <div>
+                @auth
+                    @if(auth()->user()->Role === 'admin')
+                        <button class="btn btn-primary" onclick="window.location='{{ url("add-map") }}'">Add Map</button>
+                        <button class="btn btn-secondary" onclick="window.location='{{ url("add-moderator") }}'">Add Moderator</button>
+                    @endif
+                @endauth
+            </div>
+            <div>
+                @guest
+                    <a href="{{ route('register') }}" class="btn btn-success mr-2">Register</a>
+                    <a href="{{ route('login') }}" class="btn btn-info">Login</a>
+                @endguest
+                @auth
+                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Logout</button>
+                    </form>
+                @endauth
+            </div>
         </div>
         
         <div class="row">
@@ -44,11 +61,15 @@
                         <p>Status: {{ $map->Status }}</p>
                         <button class="btn btn-primary" onclick="window.location='{{ url("comment/".$map->id) }}'">Comment</button>
                         <button class="btn btn-warning" onclick="window.location='{{ url("rate/".$map->id) }}'">Rate</button>
-                        <form method="POST" action="{{ route('delete.map', ['id' => $map->id]) }}" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                        @auth
+                            @if(auth()->user()->Role === 'admin')
+                                <form method="POST" action="{{ route('delete.map', ['id' => $map->id]) }}" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            @endif
+                        @endauth
                     </div>
                 </div>
             @endforeach

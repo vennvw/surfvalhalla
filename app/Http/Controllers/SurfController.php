@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Surf_Maps;
+use App\Models\Surf_Users;
 
 class SurfController extends Controller
 {
@@ -49,20 +50,27 @@ class SurfController extends Controller
 
     public function getMapImage($id)
     {
-    $surfMap = Surf_Maps::findOrFail($id);
+        $surfMap = Surf_Maps::findOrFail($id);
 
-    // Check if Image field exists and is not null
-    if ($surfMap->Image) {
-        $image = base64_encode($surfMap->Image);
-        $imageData = 'data:image/jpeg;base64,'.$image;
-        return response()->make($imageData, 200, [
-            'Content-Type' => 'image/jpeg',
-            'Content-Disposition' => 'inline; filename="'.$surfMap->Name.'.jpeg"'
-        ]);
-    } else {
-        abort(404); // or handle missing image as needed
+        // Check if Image field exists and is not null
+        if ($surfMap->Image) {
+            // Determine MIME type of the image
+            $mime = finfo_buffer(finfo_open(), $surfMap->Image, FILEINFO_MIME_TYPE);
+
+            // Encode image data
+            $image = base64_encode($surfMap->Image);
+            $imageData = 'data:' . $mime . ';base64,' . $image;
+
+            // Return response with correct MIME type
+            return response()->make($imageData, 200, [
+                'Content-Type' => $mime,
+                'Content-Disposition' => 'inline; filename="' . $surfMap->Name . '.' . pathinfo($mime, PATHINFO_EXTENSION) . '"'
+            ]);
+        } else {
+            abort(404); // or handle missing image as needed
+        }
     }
-    }
+
 
     public function deleteMap($id)
     {
@@ -71,10 +79,11 @@ class SurfController extends Controller
 
         return redirect()->back()->with('success', 'Map deleted successfully');
     }
+    public function addModerator()
+    {
+        $users = Surf_Users::all();
+        return view('add-admin', compact('users'));
+    }
 
-
-
-
-    // Other methods for add-map, add-moderator, comment, and rate can be added here
 }
 
