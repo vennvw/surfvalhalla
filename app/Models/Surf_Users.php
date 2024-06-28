@@ -14,15 +14,9 @@ class Surf_Users extends Authenticatable
     protected $table = 'surf_users';
     protected $fillable = ['Username', 'Password', 'Role'];
 
-    // // Hash the password when setting it
-    // public function setPasswordAttribute($value)
-    // {
-    //     $this->attributes['Password'] = Hash::make($value);
-    // }
-
     public function comments()
     {
-        return $this->hasMany(Comments::class);
+        return $this->hasMany(Comments::class, 'surf_users_id');
     }
 
     public function ratings()

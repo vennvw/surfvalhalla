@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('comment');
             $table->foreignId('surf_users_id')->constrained()->onDelete('cascade');
-            $table->foreignId('surf_maps_id')->constrained()->onDelete('cascade');
+            $table->foreignId('surf_maps_id')->constrained('surf_maps')->onDelete('cascade');
             $table->timestamps();
         });
     }

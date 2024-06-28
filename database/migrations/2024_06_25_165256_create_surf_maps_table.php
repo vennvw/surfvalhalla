@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('surf_maps', function (Blueprint $table) {
             $table->id();
             $table->string('Name', length:255);
-            $table->binary('Image');
+            $table->longBlob('Image')->nullable();
             $table->string('Status', length:40);
             $table->string('Tier', length:4);
             $table->timestamps();

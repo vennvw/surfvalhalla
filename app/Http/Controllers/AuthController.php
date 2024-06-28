@@ -23,9 +23,8 @@ class AuthController extends Controller
 
         Surf_Users::create([
             'Username' => $request->Username,
-            'Password' => Hash::make($request->Password), // Hash the password before saving
-            // 'Password' => $request->Password,
-            'Role' => 'user', // Default role set to 'user'
+            'Password' => Hash::make($request->Password),
+            'Role' => 'user',
         ]);
 
         return redirect()->route('index')->with('success', 'Registration successful. Please login.');
@@ -41,7 +40,6 @@ class AuthController extends Controller
     {
         $credentials = $request->only('Username', 'Password');
 
-        // Log the credentials and hash check
         \Log::info('Login attempt', ['username' => $credentials['Username'], 'password' => $credentials['Password']]);
 
         $user = Surf_Users::where('Username', $credentials['Username'])->first();

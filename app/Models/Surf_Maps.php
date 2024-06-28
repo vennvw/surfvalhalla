@@ -12,10 +12,10 @@ class Surf_Maps extends Model
     protected $fillable = ['Name', 'Image', 'Status', 'Tier'];
     public function comments()
     {
-        return $this->hasMany(Comments::class);
+        return $this->hasMany(Comments::class, 'surf_maps_id', 'id');
     }
     public function ratings()
     {
-        return $this->hasMany(Ratings::class);
+        return $this->hasMany(Ratings::class, 'surf_maps_id', 'id');
     }
 }

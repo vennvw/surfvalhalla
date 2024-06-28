@@ -4,7 +4,7 @@ use App\Http\Controllers\SurfController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 
-// Routes for SurfController
+
 Route::get('/', [SurfController::class, 'index'])->name('index');
 Route::get('/add-map', [SurfController::class, 'addMap']);
 Route::get('/add-moderator', [SurfController::class, 'addModerator']);
@@ -25,5 +25,13 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::put('update-user-role/{id}', [UserController::class, 'updateUserRole'])->name('update.user.role');
 Route::delete('delete-user/{id}', [UserController::class, 'deleteUser'])->name('delete.user');
 Route::get('add-admin', [SurfController::class, 'addModerator'])->name('add.admin');
+
+Route::get('/comment/{id}', [SurfController::class, 'comment'])->name('comment');
+Route::post('/store-comment', [SurfController::class, 'storeComment'])->name('store.comment');
+
+Route::post('/store-rating', [SurfController::class, 'storeRating'])->name('store.rating');
+
+Route::get('/get-map', [SurfController::class, 'getMap'])->name('get.map');
+Route::put('/update-map', [SurfController::class, 'updateMap'])->name('update.map');
 
 
